@@ -1,0 +1,23 @@
+{
+  "name": "qa-playwright-lab",
+  "version": "1.0.0",
+  "description": "Projeto de portfólio para prática de automação de testes web com Playwright.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunolopes-ti/qa-playwright-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/brunolopes-ti/qa-playwright-lab/issues"
+  },
+  "homepage": "https://github.com/brunolopes-ti/qa-playwright-lab#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1"
+  }
+}

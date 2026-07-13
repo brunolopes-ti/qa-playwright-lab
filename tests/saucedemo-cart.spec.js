@@ -1,25 +1,24 @@
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pages/LoginPage');
+const { InventoryPage } = require('../pages/InventoryPage');
+const { CartPage } = require('../pages/CartPage');
 
 test.describe('SauceDemo - Carrinho', () => {
   async function realizarLoginValido(page) {
-    await page.goto('https://www.saucedemo.com/');
-
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
-
+    const loginPage = new LoginPage(page);
+    await loginPage.login('standard_user', 'secret_sauce');
     await expect(page).toHaveURL(/.*inventory.html/);
   }
 
   test('Deve adicionar um produto ao carrinho', async ({ page }) => {
+    const inventoryPage = new InventoryPage(page);
+
     await realizarLoginValido(page);
+    await inventoryPage.adicionarBackpackAoCarrinho();
 
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-
-    await expect(page.locator('[data-test="shopping-cart-badge"]')).toBeVisible();
-    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
-
-    await expect(page.locator('[data-test="remove-sauce-labs-backpack"]')).toBeVisible();
+    await expect(inventoryPage.cartBadge).toBeVisible();
+    await expect(inventoryPage.cartBadge).toHaveText('1');
+    await expect(inventoryPage.removeBackpackButton).toBeVisible();
 
     await page.screenshot({
       path: 'docs/evidencias/playwright/produto-adicionado-carrinho-saucedemo.png',
@@ -28,21 +27,23 @@ test.describe('SauceDemo - Carrinho', () => {
   });
 
   test('Deve validar produto adicionado na página do carrinho', async ({ page }) => {
-    await realizarLoginValido(page);
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
 
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.locator('[data-test="shopping-cart-link"]').click();
+    await realizarLoginValido(page);
+    await inventoryPage.adicionarBackpackAoCarrinho();
+    await inventoryPage.abrirCarrinho();
 
     await expect(page).toHaveURL(/.*cart.html/);
-    await expect(page.locator('.title')).toHaveText('Your Cart');
+    await expect(cartPage.title).toHaveText('Your Cart');
 
-    await expect(page.locator('[data-test="inventory-item-name"]')).toBeVisible();
-    await expect(page.locator('[data-test="inventory-item-name"]')).toHaveText('Sauce Labs Backpack');
+    await expect(cartPage.productName).toBeVisible();
+    await expect(cartPage.productName).toHaveText('Sauce Labs Backpack');
 
-    await expect(page.locator('[data-test="inventory-item-price"]')).toBeVisible();
-    await expect(page.locator('[data-test="inventory-item-price"]')).toHaveText('$29.99');
+    await expect(cartPage.productPrice).toBeVisible();
+    await expect(cartPage.productPrice).toHaveText('$29.99');
 
-    await expect(page.locator('[data-test="checkout"]')).toBeVisible();
+    await expect(cartPage.checkoutButton).toBeVisible();
 
     await page.screenshot({
       path: 'docs/evidencias/playwright/validacao-carrinho-saucedemo.png',

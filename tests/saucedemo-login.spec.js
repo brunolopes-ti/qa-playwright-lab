@@ -1,16 +1,17 @@
 const { test, expect } = require('@playwright/test');
+const { LoginPage } = require('../pages/LoginPage');
+const { InventoryPage } = require('../pages/InventoryPage');
 
 test.describe('SauceDemo - Login', () => {
   test('Deve realizar login com usuário válido', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
 
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
+    await loginPage.login('standard_user', 'secret_sauce');
 
     await expect(page).toHaveURL(/.*inventory.html/);
-    await expect(page.locator('.title')).toHaveText('Products');
-    await expect(page.locator('.inventory_list')).toBeVisible();
+    await expect(inventoryPage.title).toHaveText('Products');
+    await expect(inventoryPage.inventoryList).toBeVisible();
 
     await page.screenshot({
       path: 'docs/evidencias/playwright/login-valido-saucedemo.png',
@@ -19,14 +20,12 @@ test.describe('SauceDemo - Login', () => {
   });
 
   test('Deve exibir erro ao tentar login com usuário inválido', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
+    const loginPage = new LoginPage(page);
 
-    await page.locator('[data-test="username"]').fill('usuario_invalido');
-    await page.locator('[data-test="password"]').fill('senha_invalida');
-    await page.locator('[data-test="login-button"]').click();
+    await loginPage.login('usuario_invalido', 'senha_invalida');
 
-    await expect(page.locator('[data-test="error"]')).toBeVisible();
-    await expect(page.locator('[data-test="error"]')).toContainText(
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText(
       'Username and password do not match'
     );
 
@@ -39,14 +38,12 @@ test.describe('SauceDemo - Login', () => {
   });
 
   test('Deve exibir erro ao tentar login com usuário bloqueado', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
+    const loginPage = new LoginPage(page);
 
-    await page.locator('[data-test="username"]').fill('locked_out_user');
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
+    await loginPage.login('locked_out_user', 'secret_sauce');
 
-    await expect(page.locator('[data-test="error"]')).toBeVisible();
-    await expect(page.locator('[data-test="error"]')).toContainText(
+    await expect(loginPage.errorMessage).toBeVisible();
+    await expect(loginPage.errorMessage).toContainText(
       'Sorry, this user has been locked out'
     );
 

@@ -1,8 +1,12 @@
 # QA Playwright Lab
 
+![Playwright Tests](https://github.com/brunolopes-ti/qa-playwright-lab/actions/workflows/playwright.yml/badge.svg)
+
 Projeto de portfólio criado para praticar, organizar e documentar testes automatizados end-to-end com Playwright e JavaScript.
 
-O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fluxos reais de uma aplicação de e-commerce de treino, com validações, evidências e execução completa via terminal.
+O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fluxos reais de uma aplicação de e-commerce de treino, com validações, evidências, execução completa via terminal e execução automatizada com GitHub Actions.
+
+---
 
 ## Tecnologias utilizadas
 
@@ -10,16 +14,21 @@ O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fl
 - JavaScript
 - Node.js
 - Playwright Test Runner
+- GitHub Actions
 - SauceDemo
 - Git
 - GitHub
 - Markdown
+
+---
 
 ## Sistema utilizado para teste
 
 Aplicação: [SauceDemo](https://www.saucedemo.com/)
 
 O SauceDemo é uma aplicação web utilizada para estudos de QA, permitindo praticar fluxos como login, carrinho e checkout.
+
+---
 
 ## Escopo da automação
 
@@ -31,12 +40,18 @@ A suíte automatizada cobre os seguintes fluxos:
 - Adição de produto ao carrinho;
 - Validação de produto no carrinho;
 - Checkout completo;
-- Execução da suíte completa via terminal.
+- Execução da suíte completa via terminal;
+- Execução automatizada via GitHub Actions.
+
+---
 
 ## Estrutura do projeto
 
 ```text
 qa-playwright-lab
+├── .github
+│   └── workflows
+│       └── playwright.yml
 ├── docs
 │   └── evidencias
 │       └── playwright
@@ -52,7 +67,8 @@ qa-playwright-lab
 │           ├── validacao-carrinho-saucedemo.png
 │           ├── checkout-completo-teste-passando.png
 │           ├── checkout-completo-saucedemo.png
-│           └── suite-completa-playwright-passando.png
+│           ├── suite-completa-playwright-passando.png
+│           └── github-actions-playwright-passando.png
 ├── tests
 │   ├── saucedemo-login.spec.js
 │   ├── saucedemo-cart.spec.js
@@ -63,6 +79,8 @@ qa-playwright-lab
 ├── playwright.config.js
 └── README.md
 ```
+
+---
 
 ## Como executar o projeto
 
@@ -91,6 +109,39 @@ npx playwright test tests/saucedemo-cart.spec.js --headed
 ```bash
 npx playwright test tests/saucedemo-checkout.spec.js --headed
 ```
+
+---
+
+## Execução automatizada com GitHub Actions
+
+Este projeto possui pipeline configurado com GitHub Actions para execução automática da suíte Playwright.
+
+O workflow é acionado automaticamente em eventos de `push` e `pull_request` na branch `main`.
+
+Etapas executadas no pipeline:
+
+- Checkout do repositório;
+- Configuração do Node.js;
+- Instalação das dependências com `npm ci`;
+- Instalação do navegador Chromium utilizado pelo Playwright;
+- Execução da suíte automatizada com `npx playwright test`;
+- Geração e disponibilização do relatório HTML do Playwright como artifact.
+
+Arquivo de configuração:
+
+```text
+.github/workflows/playwright.yml
+```
+
+Evidência da execução no GitHub Actions:
+
+```text
+docs/evidencias/playwright/github-actions-playwright-passando.png
+```
+
+![GitHub Actions Playwright passando](docs/evidencias/playwright/github-actions-playwright-passando.png)
+
+---
 
 ## Arquivos de teste
 
@@ -133,6 +184,8 @@ Cenário coberto:
 
 - Realizar checkout completo com sucesso.
 
+---
+
 ## Cenários automatizados
 
 ### CT-01 - Login válido
@@ -159,6 +212,8 @@ docs/evidencias/playwright/login-valido-teste-passando.png
 docs/evidencias/playwright/login-valido-saucedemo.png
 ```
 
+---
+
 ### CT-02 - Login inválido
 
 **Objetivo:** validar que o sistema exibe mensagem de erro ao tentar login com credenciais inválidas.
@@ -181,6 +236,8 @@ docs/evidencias/playwright/login-valido-saucedemo.png
 docs/evidencias/playwright/login-invalido-teste-passando.png
 docs/evidencias/playwright/login-invalido-saucedemo.png
 ```
+
+---
 
 ### CT-03 - Login com usuário bloqueado
 
@@ -205,6 +262,8 @@ docs/evidencias/playwright/login-usuario-bloqueado-teste-passando.png
 docs/evidencias/playwright/login-usuario-bloqueado-saucedemo.png
 ```
 
+---
+
 ### CT-04 - Adicionar produto ao carrinho
 
 **Objetivo:** validar que um produto pode ser adicionado ao carrinho com sucesso.
@@ -228,6 +287,8 @@ docs/evidencias/playwright/produto-adicionado-carrinho-teste-passando.png
 docs/evidencias/playwright/produto-adicionado-carrinho-saucedemo.png
 ```
 
+---
+
 ### CT-05 - Validar produto na página do carrinho
 
 **Objetivo:** validar que o produto adicionado aparece corretamente na página do carrinho.
@@ -246,6 +307,8 @@ docs/evidencias/playwright/produto-adicionado-carrinho-saucedemo.png
 docs/evidencias/playwright/validacao-carrinho-teste-passando.png
 docs/evidencias/playwright/validacao-carrinho-saucedemo.png
 ```
+
+---
 
 ### CT-06 - Checkout completo
 
@@ -276,6 +339,8 @@ docs/evidencias/playwright/checkout-completo-teste-passando.png
 docs/evidencias/playwright/checkout-completo-saucedemo.png
 ```
 
+---
+
 ## Resultado da suíte completa
 
 A suíte foi executada via terminal com o comando:
@@ -301,6 +366,8 @@ docs/evidencias/playwright/suite-completa-playwright-passando.png
 ```
 
 ![Suíte completa Playwright passando](docs/evidencias/playwright/suite-completa-playwright-passando.png)
+
+---
 
 ## Evidências visuais
 
@@ -338,6 +405,8 @@ docs/evidencias/playwright/suite-completa-playwright-passando.png
 
 ![Checkout finalizado com sucesso](docs/evidencias/playwright/checkout-completo-saucedemo.png)
 
+---
+
 ## Configuração do Playwright
 
 Arquivo:
@@ -355,15 +424,73 @@ module.exports = defineConfig({
   testDir: './tests',
   timeout: 30000,
   fullyParallel: false,
+  retries: process.env.CI ? 1 : 0,
+  workers: process.env.CI ? 1 : undefined,
   use: {
     browserName: 'chromium',
-    headless: false,
+    headless: process.env.CI ? true : false,
     screenshot: 'off',
     video: 'off'
   },
-  reporter: [['list']]
+  reporter: process.env.CI ? [['html'], ['list']] : [['list']]
 });
 ```
+
+---
+
+## GitHub Actions
+
+Arquivo:
+
+```text
+.github/workflows/playwright.yml
+```
+
+Workflow configurado:
+
+```yaml
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+```
+
+---
 
 ## Boas práticas aplicadas
 
@@ -375,7 +502,11 @@ module.exports = defineConfig({
 - Geração de evidências com screenshot;
 - Organização das evidências em pasta específica para documentação;
 - Execução da suíte completa via terminal;
+- Execução automatizada com GitHub Actions;
+- Geração de relatório HTML no pipeline;
 - Controle de arquivos temporários com `.gitignore`.
+
+---
 
 ## Observações
 
@@ -387,11 +518,15 @@ docs/evidencias/playwright
 
 As pastas `node_modules`, `test-results` e `playwright-report` foram adicionadas ao `.gitignore`, evitando versionar dependências e arquivos temporários gerados durante a execução local.
 
+---
+
 ## Status do projeto
 
 Concluído nesta etapa.
 
-Suíte automatizada Playwright criada, organizada, executada e documentada com sucesso.
+Suíte automatizada Playwright criada, organizada, executada, documentada e integrada com GitHub Actions.
+
+---
 
 ## Próximas melhorias possíveis
 
@@ -399,5 +534,5 @@ Suíte automatizada Playwright criada, organizada, executada e documentada com s
 - Aplicar Page Object Model;
 - Utilizar massa de dados externa;
 - Adicionar testes negativos no checkout;
-- Executar testes em pipeline de CI/CD;
+- Expandir execução em múltiplos navegadores;
 - Comparar a implementação com Cypress e Selenium WebDriver.

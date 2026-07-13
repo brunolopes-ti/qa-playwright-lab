@@ -4,7 +4,7 @@
 
 Projeto de portfólio criado para praticar, organizar e documentar testes automatizados end-to-end com Playwright e JavaScript.
 
-O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fluxos reais de uma aplicação de e-commerce de treino, com validações, evidências, execução completa via terminal e execução automatizada com GitHub Actions.
+O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fluxos reais de uma aplicação de e-commerce de treino, com validações, evidências, execução completa via terminal, execução automatizada com GitHub Actions e organização dos testes com Page Object Model.
 
 ---
 
@@ -14,6 +14,7 @@ O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fl
 - JavaScript
 - Node.js
 - Playwright Test Runner
+- Page Object Model
 - GitHub Actions
 - SauceDemo
 - Git
@@ -41,7 +42,8 @@ A suíte automatizada cobre os seguintes fluxos:
 - Validação de produto no carrinho;
 - Checkout completo;
 - Execução da suíte completa via terminal;
-- Execução automatizada via GitHub Actions.
+- Execução automatizada via GitHub Actions;
+- Organização dos testes com Page Object Model.
 
 ---
 
@@ -68,7 +70,13 @@ qa-playwright-lab
 │           ├── checkout-completo-teste-passando.png
 │           ├── checkout-completo-saucedemo.png
 │           ├── suite-completa-playwright-passando.png
+│           ├── suite-completa-playwright-pom-passando.png
 │           └── github-actions-playwright-passando.png
+├── pages
+│   ├── LoginPage.js
+│   ├── InventoryPage.js
+│   ├── CartPage.js
+│   └── CheckoutPage.js
 ├── tests
 │   ├── saucedemo-login.spec.js
 │   ├── saucedemo-cart.spec.js
@@ -140,6 +148,55 @@ docs/evidencias/playwright/github-actions-playwright-passando.png
 ```
 
 ![GitHub Actions Playwright passando](docs/evidencias/playwright/github-actions-playwright-passando.png)
+
+---
+
+## Page Object Model
+
+O projeto foi refatorado utilizando o padrão Page Object Model, separando a lógica das páginas da lógica dos testes.
+
+Essa abordagem melhora a organização, manutenção e reutilização do código, deixando os testes mais limpos e próximos de uma estrutura utilizada em projetos reais de automação.
+
+### Classes criadas
+
+```text
+pages/LoginPage.js
+pages/InventoryPage.js
+pages/CartPage.js
+pages/CheckoutPage.js
+```
+
+### Responsabilidades
+
+**LoginPage**
+
+- Acessar a aplicação;
+- Preencher usuário;
+- Preencher senha;
+- Clicar no botão de login;
+- Centralizar o fluxo de autenticação.
+
+**InventoryPage**
+
+- Validar elementos da página de produtos;
+- Adicionar produto ao carrinho;
+- Abrir o carrinho;
+- Validar contador do carrinho.
+
+**CartPage**
+
+- Validar produto no carrinho;
+- Validar preço;
+- Validar botão de checkout;
+- Avançar para o checkout.
+
+**CheckoutPage**
+
+- Preencher dados do comprador;
+- Avançar para a tela de resumo;
+- Validar produto, preço e subtotal;
+- Finalizar a compra;
+- Validar mensagem de pedido concluído.
 
 ---
 
@@ -367,6 +424,14 @@ docs/evidencias/playwright/suite-completa-playwright-passando.png
 
 ![Suíte completa Playwright passando](docs/evidencias/playwright/suite-completa-playwright-passando.png)
 
+**Evidência da execução completa após aplicação do Page Object Model:**
+
+```text
+docs/evidencias/playwright/suite-completa-playwright-pom-passando.png
+```
+
+![Suíte completa Playwright com Page Object Model](docs/evidencias/playwright/suite-completa-playwright-pom-passando.png)
+
 ---
 
 ## Evidências visuais
@@ -499,6 +564,8 @@ jobs:
 - Validações de URL, textos, elementos visíveis e fluxo de navegação;
 - Uso de `async/await`;
 - Uso de assertions nativas do Playwright com `expect`;
+- Aplicação do padrão Page Object Model para separação entre lógica de páginas e cenários de teste;
+- Criação de classes reutilizáveis para Login, Inventário, Carrinho e Checkout;
 - Geração de evidências com screenshot;
 - Organização das evidências em pasta específica para documentação;
 - Execução da suíte completa via terminal;
@@ -524,15 +591,15 @@ As pastas `node_modules`, `test-results` e `playwright-report` foram adicionadas
 
 Concluído nesta etapa.
 
-Suíte automatizada Playwright criada, organizada, executada, documentada e integrada com GitHub Actions.
+Suíte automatizada Playwright criada, organizada, executada, documentada, integrada com GitHub Actions e refatorada com Page Object Model.
 
 ---
 
 ## Próximas melhorias possíveis
 
 - Criar comandos auxiliares reutilizáveis;
-- Aplicar Page Object Model;
 - Utilizar massa de dados externa;
 - Adicionar testes negativos no checkout;
 - Expandir execução em múltiplos navegadores;
+- Gerar relatórios adicionais;
 - Comparar a implementação com Cypress e Selenium WebDriver.

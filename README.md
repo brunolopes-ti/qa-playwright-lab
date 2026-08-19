@@ -1,25 +1,32 @@
 # QA Playwright Lab
 
+![Playwright](https://img.shields.io/badge/Playwright-E2E%20Testing-green)
+![JavaScript](https://img.shields.io/badge/JavaScript-Test%20Automation-yellow)
+![Node.js](https://img.shields.io/badge/Node.js-Runtime-green)
+![Page Object Model](https://img.shields.io/badge/Page%20Object%20Model-Test%20Design-blue)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue)
+
 ![Playwright Tests](https://github.com/brunolopes-ti/qa-playwright-lab/actions/workflows/playwright.yml/badge.svg)
 
-Projeto de portfólio criado para praticar, organizar e documentar testes automatizados end-to-end com Playwright e JavaScript.
+Projeto de portfólio desenvolvido para praticar, organizar e documentar **testes automatizados end-to-end com Playwright e JavaScript**.
 
-O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fluxos reais de uma aplicação de e-commerce de treino, com validações, evidências, execução completa via terminal, execução automatizada com GitHub Actions e organização dos testes com Page Object Model.
+O projeto demonstra uma suíte de automação Web cobrindo fluxos funcionais do SauceDemo, com validações, evidências, execução via terminal, integração contínua com GitHub Actions e organização dos testes utilizando **Page Object Model**.
 
 ---
 
 ## Tecnologias utilizadas
 
-- Playwright
-- JavaScript
-- Node.js
-- Playwright Test Runner
-- Page Object Model
-- GitHub Actions
-- SauceDemo
-- Git
-- GitHub
-- Markdown
+- Playwright;
+- JavaScript;
+- Node.js;
+- Playwright Test Runner;
+- Page Object Model;
+- GitHub Actions;
+- SauceDemo;
+- Git;
+- GitHub;
+- Markdown;
+- Visual Studio Code.
 
 ---
 
@@ -27,7 +34,7 @@ O objetivo deste projeto é demonstrar uma suíte de automação web cobrindo fl
 
 Aplicação: [SauceDemo](https://www.saucedemo.com/)
 
-O SauceDemo é uma aplicação web utilizada para estudos de QA, permitindo praticar fluxos como login, carrinho e checkout.
+O SauceDemo é uma aplicação Web utilizada para estudos e práticas de QA, permitindo validar fluxos como autenticação, carrinho e checkout.
 
 ---
 
@@ -50,13 +57,13 @@ A suíte automatizada cobre os seguintes fluxos:
 ## Estrutura do projeto
 
 ```text
-qa-playwright-lab
-├── .github
-│   └── workflows
+qa-playwright-lab/
+├── .github/
+│   └── workflows/
 │       └── playwright.yml
-├── docs
-│   └── evidencias
-│       └── playwright
+├── docs/
+│   └── evidencias/
+│       └── playwright/
 │           ├── login-valido-teste-passando.png
 │           ├── login-valido-saucedemo.png
 │           ├── login-invalido-teste-passando.png
@@ -72,12 +79,12 @@ qa-playwright-lab
 │           ├── suite-completa-playwright-passando.png
 │           ├── suite-completa-playwright-pom-passando.png
 │           └── github-actions-playwright-passando.png
-├── pages
+├── pages/
 │   ├── LoginPage.js
 │   ├── InventoryPage.js
 │   ├── CartPage.js
 │   └── CheckoutPage.js
-├── tests
+├── tests/
 │   ├── saucedemo-login.spec.js
 │   ├── saucedemo-cart.spec.js
 │   └── saucedemo-checkout.spec.js
@@ -92,27 +99,31 @@ qa-playwright-lab
 
 ## Como executar o projeto
 
-Instale as dependências, caso necessário:
+Instale as dependências:
 
 ```bash
 npm install
 ```
 
-Execute toda a suíte de testes:
+Execute toda a suíte:
 
 ```bash
 npx playwright test --headed
 ```
 
-Execute um arquivo específico:
+Execute apenas os testes de login:
 
 ```bash
 npx playwright test tests/saucedemo-login.spec.js --headed
 ```
 
+Execute os testes de carrinho:
+
 ```bash
 npx playwright test tests/saucedemo-cart.spec.js --headed
 ```
+
+Execute os testes de checkout:
 
 ```bash
 npx playwright test tests/saucedemo-checkout.spec.js --headed
@@ -122,30 +133,27 @@ npx playwright test tests/saucedemo-checkout.spec.js --headed
 
 ## Execução automatizada com GitHub Actions
 
-Este projeto possui pipeline configurado com GitHub Actions para execução automática da suíte Playwright.
+O projeto possui pipeline configurado com **GitHub Actions** para execução automática da suíte Playwright.
 
-O workflow é acionado automaticamente em eventos de `push` e `pull_request` na branch `main`.
+O workflow é acionado automaticamente nos eventos de `push` e `pull_request` direcionados à branch `main`.
 
-Etapas executadas no pipeline:
+### Etapas do pipeline
 
 - Checkout do repositório;
 - Configuração do Node.js;
 - Instalação das dependências com `npm ci`;
 - Instalação do navegador Chromium utilizado pelo Playwright;
-- Execução da suíte automatizada com `npx playwright test`;
-- Geração e disponibilização do relatório HTML do Playwright como artifact.
+- Execução da suíte automatizada;
+- Geração do relatório HTML;
+- Disponibilização do relatório como artifact.
 
-Arquivo de configuração:
+Arquivo:
 
 ```text
 .github/workflows/playwright.yml
 ```
 
-Evidência da execução no GitHub Actions:
-
-```text
-docs/evidencias/playwright/github-actions-playwright-passando.png
-```
+### Evidência
 
 ![GitHub Actions Playwright passando](docs/evidencias/playwright/github-actions-playwright-passando.png)
 
@@ -153,7 +161,7 @@ docs/evidencias/playwright/github-actions-playwright-passando.png
 
 ## Page Object Model
 
-O projeto foi refatorado utilizando o padrão Page Object Model, separando a lógica das páginas da lógica dos testes.
+O projeto foi refatorado utilizando o padrão **Page Object Model (POM)**, separando a lógica das páginas da lógica dos cenários de teste.
 
 Essa abordagem melhora a organização, manutenção e reutilização do código, deixando os testes mais limpos e próximos de uma estrutura utilizada em projetos reais de automação.
 
@@ -400,13 +408,13 @@ docs/evidencias/playwright/checkout-completo-saucedemo.png
 
 ## Resultado da suíte completa
 
-A suíte foi executada via terminal com o comando:
+A suíte foi executada via terminal com:
 
 ```bash
 npx playwright test --headed
 ```
 
-Resultado obtido:
+Resultado:
 
 ```text
 saucedemo-login.spec.js       3 testes passando
@@ -416,19 +424,11 @@ saucedemo-checkout.spec.js    1 teste passando
 Total: 6 testes passando
 ```
 
-**Evidência da execução completa:**
-
-```text
-docs/evidencias/playwright/suite-completa-playwright-passando.png
-```
+### Evidência da suíte completa
 
 ![Suíte completa Playwright passando](docs/evidencias/playwright/suite-completa-playwright-passando.png)
 
-**Evidência da execução completa após aplicação do Page Object Model:**
-
-```text
-docs/evidencias/playwright/suite-completa-playwright-pom-passando.png
-```
+### Evidência após aplicação do Page Object Model
 
 ![Suíte completa Playwright com Page Object Model](docs/evidencias/playwright/suite-completa-playwright-pom-passando.png)
 
@@ -491,12 +491,14 @@ module.exports = defineConfig({
   fullyParallel: false,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 1 : undefined,
+
   use: {
     browserName: 'chromium',
     headless: process.env.CI ? true : false,
     screenshot: 'off',
     video: 'off'
   },
+
   reporter: process.env.CI ? [['html'], ['list']] : [['list']]
 });
 ```
@@ -563,11 +565,11 @@ jobs:
 - Uso de seletores estáveis com `data-test`;
 - Validações de URL, textos, elementos visíveis e fluxo de navegação;
 - Uso de `async/await`;
-- Uso de assertions nativas do Playwright com `expect`;
-- Aplicação do padrão Page Object Model para separação entre lógica de páginas e cenários de teste;
-- Criação de classes reutilizáveis para Login, Inventário, Carrinho e Checkout;
-- Geração de evidências com screenshot;
-- Organização das evidências em pasta específica para documentação;
+- Assertions nativas do Playwright com `expect`;
+- Aplicação do Page Object Model;
+- Separação entre lógica de página e cenários de teste;
+- Criação de classes reutilizáveis;
+- Organização de evidências em pasta específica;
 - Execução da suíte completa via terminal;
 - Execução automatizada com GitHub Actions;
 - Geração de relatório HTML no pipeline;
@@ -575,31 +577,50 @@ jobs:
 
 ---
 
-## Observações
+## Competências demonstradas
 
-As evidências geradas pelos testes foram salvas na pasta:
+Este projeto demonstra conhecimentos práticos em:
 
-```text
-docs/evidencias/playwright
-```
-
-As pastas `node_modules`, `test-results` e `playwright-report` foram adicionadas ao `.gitignore`, evitando versionar dependências e arquivos temporários gerados durante a execução local.
+- Automação de testes Web;
+- Testes end-to-end;
+- Playwright;
+- JavaScript;
+- Node.js;
+- Page Object Model;
+- Assertions;
+- Seletores;
+- Testes positivos e negativos;
+- Automação de login, carrinho e checkout;
+- GitHub Actions;
+- CI/CD;
+- Git e GitHub;
+- Evidências de execução;
+- Documentação técnica.
 
 ---
 
 ## Status do projeto
 
-Concluído nesta etapa.
+**Concluído nesta etapa.**
 
-Suíte automatizada Playwright criada, organizada, executada, documentada, integrada com GitHub Actions e refatorada com Page Object Model.
+Suíte automatizada Playwright criada, organizada, executada, documentada, integrada ao GitHub Actions e refatorada utilizando Page Object Model.
 
 ---
 
 ## Próximas melhorias possíveis
 
-- Criar comandos auxiliares reutilizáveis;
 - Utilizar massa de dados externa;
-- Adicionar testes negativos no checkout;
-- Expandir execução em múltiplos navegadores;
-- Gerar relatórios adicionais;
-- Comparar a implementação com Cypress e Selenium WebDriver.
+- Criar comandos e funções auxiliares reutilizáveis;
+- Adicionar novos cenários negativos no checkout;
+- Expandir a execução para múltiplos navegadores;
+- Explorar relatórios adicionais;
+- Evoluir a integração com práticas de CI/CD.
+
+---
+
+## Autor
+
+**Bruno Ramos Lopes**
+
+LinkedIn: [linkedin.com/in/brunolopes-ti](https://linkedin.com/in/brunolopes-ti)  
+GitHub: [github.com/brunolopes-ti](https://github.com/brunolopes-ti)

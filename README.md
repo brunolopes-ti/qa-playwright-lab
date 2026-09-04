@@ -5,12 +5,15 @@
 ![Node.js](https://img.shields.io/badge/Node.js-Runtime-green)
 ![Page Object Model](https://img.shields.io/badge/Page%20Object%20Model-Test%20Design-blue)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-blue)
+![Azure DevOps](https://img.shields.io/badge/Azure%20DevOps-CI%2FCD-blue)
+![Azure Pipelines](https://img.shields.io/badge/Azure%20Pipelines-Automation-blue)
+![Azure Boards](https://img.shields.io/badge/Azure%20Boards-Work%20Management-blue)
 
 ![Playwright Tests](https://github.com/brunolopes-ti/qa-playwright-lab/actions/workflows/playwright.yml/badge.svg)
 
 Projeto de portfólio desenvolvido para praticar, organizar e documentar **testes automatizados end-to-end com Playwright e JavaScript**.
 
-O projeto demonstra uma suíte de automação Web cobrindo fluxos funcionais do SauceDemo, com validações, evidências, execução via terminal, integração contínua com GitHub Actions e organização dos testes utilizando **Page Object Model**.
+O projeto demonstra uma suíte de automação Web cobrindo fluxos funcionais do SauceDemo, com validações, evidências, execução via terminal, organização dos testes utilizando **Page Object Model**, integração contínua com **GitHub Actions** e **Azure Pipelines**, além de organização e rastreabilidade das atividades utilizando **Azure Boards**.
 
 ---
 
@@ -22,6 +25,10 @@ O projeto demonstra uma suíte de automação Web cobrindo fluxos funcionais do 
 - Playwright Test Runner;
 - Page Object Model;
 - GitHub Actions;
+- Azure DevOps;
+- Azure Pipelines;
+- Azure Boards;
+- CI/CD;
 - SauceDemo;
 - Git;
 - GitHub;
@@ -50,6 +57,9 @@ A suíte automatizada cobre os seguintes fluxos:
 - Checkout completo;
 - Execução da suíte completa via terminal;
 - Execução automatizada via GitHub Actions;
+- Execução automatizada via Azure Pipelines;
+- Publicação de relatório HTML como artifact;
+- Organização e rastreabilidade de atividades com Azure Boards;
 - Organização dos testes com Page Object Model.
 
 ---
@@ -64,6 +74,15 @@ qa-playwright-lab/
 ├── docs/
 │   └── evidencias/
 │       └── playwright/
+│           ├── azure-devops/
+│           │   ├── azure-devops-pipeline-yaml-integrado.png
+│           │   ├── azure-devops-pipeline-sucesso.png
+│           │   ├── azure-devops-playwright-6-testes-passando.png
+│           │   ├── azure-devops-artifact-playwright-publicado.png
+│           │   ├── azure-devops-artifact-playwright-disponivel.png
+│           │   ├── azure-devops-relatorio-playwright-6-passed.png
+│           │   ├── azure-devops-boards-issue-concluido.png
+│           │   └── azure-devops-boards-rastreabilidade-issue-tasks.png
 │           ├── login-valido-teste-passando.png
 │           ├── login-valido-saucedemo.png
 │           ├── login-invalido-teste-passando.png
@@ -89,6 +108,7 @@ qa-playwright-lab/
 │   ├── saucedemo-cart.spec.js
 │   └── saucedemo-checkout.spec.js
 ├── .gitignore
+├── azure-pipelines.yml
 ├── package.json
 ├── package-lock.json
 ├── playwright.config.js
@@ -503,6 +523,8 @@ module.exports = defineConfig({
 });
 ```
 
+Em ambientes de CI, a variável `CI` é utilizada para executar o Chromium em modo **headless**, limitar a execução a um worker, habilitar retry e gerar o relatório HTML do Playwright.
+
 ---
 
 ## GitHub Actions
@@ -521,6 +543,7 @@ name: Playwright Tests
 on:
   push:
     branches: [ main ]
+
   pull_request:
     branches: [ main ]
 
@@ -559,6 +582,257 @@ jobs:
 
 ---
 
+## Azure DevOps
+
+O projeto também foi integrado ao **Azure DevOps**, utilizando **Azure Pipelines** para execução automatizada da suíte Playwright e **Azure Boards** para organização e rastreabilidade das atividades relacionadas à implementação.
+
+A integração mantém o código-fonte no GitHub e utiliza o Azure DevOps como plataforma complementar de CI e gerenciamento do trabalho.
+
+---
+
+## Azure Pipelines
+
+O pipeline do Azure DevOps é definido por YAML no arquivo:
+
+```text
+azure-pipelines.yml
+```
+
+A execução é acionada automaticamente após alterações na branch `main`.
+
+### Fluxo de execução
+
+```text
+Push na branch main
+        ↓
+GitHub
+        ↓
+Azure Pipelines
+        ↓
+Checkout do repositório
+        ↓
+Configuração do Node.js
+        ↓
+npm ci
+        ↓
+Instalação do Chromium
+        ↓
+Playwright em modo headless
+        ↓
+6 testes executados
+        ↓
+Relatório HTML
+        ↓
+Pipeline Artifact
+```
+
+### Etapas configuradas
+
+- Checkout do repositório GitHub;
+- Configuração do Node.js;
+- Instalação das dependências com `npm ci`;
+- Instalação do Chromium e dependências necessárias;
+- Execução dos testes Playwright;
+- Uso da variável de ambiente `CI`;
+- Execução do Chromium em modo headless;
+- Geração do relatório HTML;
+- Publicação da pasta `playwright-report` como Pipeline Artifact.
+
+### Configuração do pipeline
+
+```yaml
+trigger:
+  - main
+
+pr:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+
+  - task: UseNode@1
+    inputs:
+      version: '20.x'
+    displayName: 'Instalar Node.js'
+
+  - script: npm ci
+    displayName: 'Instalar dependências'
+
+  - script: npx playwright install --with-deps chromium
+    displayName: 'Instalar Chromium'
+
+  - script: npx playwright test
+    displayName: 'Executar testes Playwright'
+    env:
+      CI: 'true'
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: 'playwright-report'
+      artifact: 'playwright-report'
+      publishLocation: 'pipeline'
+    displayName: 'Publicar relatório Playwright'
+```
+
+### Resultado da execução no Azure Pipelines
+
+Na execução documentada:
+
+```text
+6 testes executados
+6 testes aprovados
+0 falhas
+0 flaky
+0 ignorados
+```
+
+Tempo registrado no relatório:
+
+```text
+6.6 segundos
+```
+
+A execução completa do pipeline foi concluída com sucesso, incluindo preparação do ambiente, execução da suíte e publicação do artifact.
+
+### Evidência do pipeline configurado
+
+![Azure Pipelines YAML integrado](docs/evidencias/playwright/azure-devops/azure-devops-pipeline-yaml-integrado.png)
+
+### Evidência do pipeline concluído com sucesso
+
+![Azure Pipeline executado com sucesso](docs/evidencias/playwright/azure-devops/azure-devops-pipeline-sucesso.png)
+
+### Evidência da execução dos testes
+
+![6 testes Playwright passando no Azure Pipelines](docs/evidencias/playwright/azure-devops/azure-devops-playwright-6-testes-passando.png)
+
+---
+
+## Pipeline Artifact
+
+Após a execução da suíte, o Playwright gera um relatório HTML.
+
+A pasta:
+
+```text
+playwright-report
+```
+
+é publicada automaticamente no Azure DevOps utilizando:
+
+```yaml
+PublishPipelineArtifact@1
+```
+
+O artifact permite recuperar o relatório gerado após o término da execução do pipeline.
+
+### Evidência da publicação
+
+![Artifact Playwright publicado](docs/evidencias/playwright/azure-devops/azure-devops-artifact-playwright-publicado.png)
+
+### Evidência do artifact disponível
+
+![Artifact Playwright disponível](docs/evidencias/playwright/azure-devops/azure-devops-artifact-playwright-disponivel.png)
+
+---
+
+## Relatório HTML no Azure Pipelines
+
+O relatório HTML do Playwright foi recuperado a partir do artifact publicado pelo Azure Pipelines.
+
+Resultado registrado:
+
+```text
+All:     6
+Passed:  6
+Failed:  0
+Flaky:   0
+Skipped: 0
+```
+
+Os cenários exibidos no relatório correspondem aos fluxos de:
+
+- Login;
+- Carrinho;
+- Checkout.
+
+### Evidência
+
+![Relatório Playwright com 6 testes aprovados](docs/evidencias/playwright/azure-devops/azure-devops-relatorio-playwright-6-passed.png)
+
+---
+
+## Azure Boards
+
+O **Azure Boards** foi utilizado para organizar e acompanhar as atividades necessárias para implementar a integração do projeto com Azure DevOps.
+
+O projeto utiliza o processo **Basic**, com organização baseada em:
+
+```text
+Issue
+└── Task
+```
+
+Foi criado o seguinte Issue:
+
+```text
+Issue #1
+Integrar testes Playwright ao Azure DevOps
+```
+
+### Critérios de conclusão definidos
+
+- Pipeline configurado por YAML;
+- Execução automática após push na `main`;
+- Suíte Playwright executada com sucesso;
+- 6 testes aprovados;
+- Relatório HTML publicado como artifact;
+- Evidências registradas no projeto.
+
+### Tasks relacionadas
+
+Foram criadas quatro Tasks filhas:
+
+1. Configurar Azure Pipeline para execução dos testes Playwright;
+2. Executar suíte Playwright em CI;
+3. Publicar relatório HTML como artifact;
+4. Validar execução e registrar evidências.
+
+As quatro Tasks foram relacionadas ao Issue principal utilizando relação **Parent/Child**.
+
+Ao final da implementação:
+
+```text
+Issue #1 — Done
+├── Task #2 — Done
+├── Task #3 — Done
+├── Task #4 — Done
+└── Task #5 — Done
+```
+
+### Tags utilizadas
+
+```text
+Azure-DevOps
+CI/CD
+Playwright
+QA
+```
+
+### Evidência do Board
+
+![Azure Boards com Issue concluído](docs/evidencias/playwright/azure-devops/azure-devops-boards-issue-concluido.png)
+
+### Evidência de rastreabilidade
+
+![Rastreabilidade entre Issue e Tasks](docs/evidencias/playwright/azure-devops/azure-devops-boards-rastreabilidade-issue-tasks.png)
+
+---
+
 ## Boas práticas aplicadas
 
 - Separação dos testes por fluxo funcional;
@@ -572,8 +846,18 @@ jobs:
 - Organização de evidências em pasta específica;
 - Execução da suíte completa via terminal;
 - Execução automatizada com GitHub Actions;
-- Geração de relatório HTML no pipeline;
-- Controle de arquivos temporários com `.gitignore`.
+- Execução automatizada com Azure Pipelines;
+- Configuração de pipeline por YAML;
+- Execução de testes em ambiente CI;
+- Execução do navegador em modo headless;
+- Geração de relatório HTML;
+- Publicação de Pipeline Artifact;
+- Organização de trabalho com Azure Boards;
+- Uso de Issue e Tasks;
+- Rastreabilidade Parent/Child;
+- Uso de critérios de conclusão;
+- Controle de arquivos temporários com `.gitignore`;
+- Versionamento com Git e GitHub.
 
 ---
 
@@ -592,10 +876,38 @@ Este projeto demonstra conhecimentos práticos em:
 - Testes positivos e negativos;
 - Automação de login, carrinho e checkout;
 - GitHub Actions;
+- Azure DevOps;
+- Azure Pipelines;
+- Azure Boards;
 - CI/CD;
+- Pipeline as Code com YAML;
+- Execução headless;
+- Pipeline Artifact;
+- Organização e rastreabilidade de atividades;
 - Git e GitHub;
 - Evidências de execução;
 - Documentação técnica.
+
+---
+
+## Resultado técnico
+
+O projeto atualmente possui:
+
+```text
+6 testes E2E automatizados
+6 testes aprovados
+3 arquivos de especificação
+4 Page Objects
+2 integrações de CI
+1 pipeline GitHub Actions
+1 pipeline Azure Pipelines
+1 relatório HTML publicado como artifact
+1 Issue documentado no Azure Boards
+4 Tasks relacionadas e concluídas
+```
+
+A suíte cobre autenticação, carrinho e checkout e pode ser executada localmente ou automaticamente por pipelines de integração contínua.
 
 ---
 
@@ -603,7 +915,9 @@ Este projeto demonstra conhecimentos práticos em:
 
 **Concluído nesta etapa.**
 
-Suíte automatizada Playwright criada, organizada, executada, documentada, integrada ao GitHub Actions e refatorada utilizando Page Object Model.
+Suíte automatizada Playwright criada, organizada, executada e documentada, utilizando **Page Object Model**, integrada a **GitHub Actions** e **Azure Pipelines**, com publicação de relatório HTML como artifact e organização/rastreabilidade das atividades através do **Azure Boards**.
+
+O projeto possui evidências públicas da automação, da execução em CI e da implementação realizada.
 
 ---
 
@@ -613,8 +927,11 @@ Suíte automatizada Playwright criada, organizada, executada, documentada, integ
 - Criar comandos e funções auxiliares reutilizáveis;
 - Adicionar novos cenários negativos no checkout;
 - Expandir a execução para múltiplos navegadores;
-- Explorar relatórios adicionais;
-- Evoluir a integração com práticas de CI/CD.
+- Implementar testes parametrizados;
+- Explorar execução paralela em diferentes navegadores;
+- Evoluir políticas de execução em Pull Requests;
+- Explorar integração entre commits, pipelines e Work Items;
+- Adicionar novos relatórios e métricas de execução.
 
 ---
 

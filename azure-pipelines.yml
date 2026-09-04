@@ -24,7 +24,7 @@ steps:
   - script: npx playwright test
     displayName: 'Executar testes Playwright'
     env:
-    CI: 'true'
+      CI: 'true'
 
   - task: PublishPipelineArtifact@1
     condition: always()

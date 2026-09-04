@@ -1,0 +1,33 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Instalar Node.js'
+
+  - script: npm ci
+    displayName: 'Instalar dependências'
+
+  - script: npx playwright install --with-deps chromium
+    displayName: 'Instalar Chromium'
+
+  - script: npx playwright test
+    displayName: 'Executar testes Playwright'
+
+  - task: PublishPipelineArtifact@1
+    condition: always()
+    inputs:
+      targetPath: 'playwright-report'
+      artifact: 'playwright-report'
+      publishLocation: 'pipeline'
+    displayName: 'Publicar relatório Playwright'
